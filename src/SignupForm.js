@@ -11,14 +11,14 @@ import DisplayError from './DisplayError';
  * */
 
 
-function SignupForm({handleSignUp}){
+function SignupForm({handleSignup}){
     const initialFormData = {
         username: "",
         password: "",
         firstname: "",
         lastname: "",
         zipcode: "",
-        radius:0
+        radius: 0
       }
 
   const [formData, setFormData] = useState(initialFormData);
@@ -37,7 +37,8 @@ function SignupForm({handleSignUp}){
   // handles the sign up to set the token. redirects to home on success
   async function handleSubmit(evt) {
     evt.preventDefault();
-    const response = await handleSignUp(formData);
+    const response = await handleSignup(formData);
+    console.log("Signup response -->", response)
     if (response.success === true) {
       history.push("/");
     } else {

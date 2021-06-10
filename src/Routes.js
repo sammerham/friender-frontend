@@ -8,34 +8,34 @@ import Likes from './Likes';
 import { Route, Switch, Redirect } from 'react-router-dom';
 
 
-function Routes(){
-    console.log('Route')
-    return (
-        <Switch>
-            <Route exact path="/">
-                <Homepage />
-            </Route>
-            {/* {currentUser ? */}
-                <Switch>
-                    <Route exact path="/profileForm">
-                        <ProfileForm />
-                    </Route>
-                    <Route exact path="/Signup">
-                        <SignupForm />
-                    </Route>
-                    <Route exact path="/login">
-                        <LoginForm />
-                    </Route>
-                    <Route exact path="/likes">
-                        <Likes />
-                    </Route>
-                    <Route exact path="/matches">
-                        <Matches />
-                    </Route>
-                    <Redirect to="/" />
-                </Switch>
-                {/* : */}
-                {/* <Switch>
+function Routes({ handleSignup, handleLogin, handleLogout }) {
+  console.log('Route')
+  return (
+    <Switch>
+      <Route exact path="/">
+        <Homepage />
+      </Route>
+      {/* {currentUser ? */}
+      <Switch>
+        <Route exact path="/profileForm">
+          <ProfileForm />
+        </Route>
+        <Route exact path="/Signup">
+          <SignupForm handleSignup={handleSignup} />
+        </Route>
+        <Route exact path="/login">
+          <LoginForm handleLogin={handleLogin} />
+        </Route>
+        <Route exact path="/likes">
+          <Likes />
+        </Route>
+        <Route exact path="/matches">
+          <Matches />
+        </Route>
+        <Redirect to="/" />
+      </Switch>
+      {/* : */}
+      {/* <Switch>
                     <Route exact path="/login">
                         <LoginForm handleLogin={handleLogin} />
                     </Route>
@@ -44,8 +44,8 @@ function Routes(){
                     </Route>
                     <Redirect to="/" />
                 </Switch> */}
-                {/* } */}
-        </Switch>
-    )
+      {/* } */}
+    </Switch>
+  )
 }
 export default Routes;

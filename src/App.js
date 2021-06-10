@@ -1,14 +1,61 @@
-import logo from './logo.svg';
 import './App.css';
 import Navbar from './NavBar'
 import Routes from './Routes'
-import {BrowserRouter} from 'react-router-dom';
+import { BrowserRouter } from 'react-router-dom';
+import './frienderAPI'
+import frienderApi from './frienderAPI';
+import { React, useState } from 'react'
+
+
+
+
+
+
 function App() {
+
+  const [currentUser, setCurrentUser] = useState(null);
+
+  const [isUserLoading, setIsUserLoading] = useState(true);
+  const [errorMessages, setErrorMessages] = useState([]);
+
+  async function handleLogin(loginData) {
+    try {
+      const user = await frienderApi.login(loginData);
+      setCurrentUser(user);
+      return { success: true, errors: null }
+    } catch (errors) {
+      return { success: false, errors: errors }
+    }
+  }
+
+  /** Removes token and currentUser from state 
+   * and removes token from local storage */
+  function handleLogout() {
+    setCurrentUser(null);
+    // localStorage.removeItem('user');
+  }
+
+  /** Accepts loginData {username, password}
+   * Returns token if authenticated */
+  async function handleSignup(signupData) {
+    try {
+      const user = await frienderApi.signupUser(signupData);
+      setCurrentUser(user);
+      return { success: true, errors: null }
+    } catch (errors) {
+      return { success: false, errors: errors }
+    }
+  }
+
   return (
     <div className="App">
       <BrowserRouter>
-        <Navbar/>
-        <Routes/>
+        <Navbar />
+        <Routes
+          handleSignup={handleSignup}
+          handleLogin={handleLogin}
+          handleLogout={handleLogout}
+          errorMessages={errorMessages} />
       </BrowserRouter>
     </div>
   );
