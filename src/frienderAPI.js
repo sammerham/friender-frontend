@@ -94,6 +94,11 @@ class frienderApi {
     })
     return res.data
   }
+
+
 }
+
+
+
 
 export default frienderApi
