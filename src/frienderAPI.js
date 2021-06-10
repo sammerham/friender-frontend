@@ -64,19 +64,36 @@ class frienderApi {
     return res.user;
   }
 
-  // /** update a user's information */
-  // static async updateUser({username, firstName, lastName, password, email }) {
-  //   const res = await this.request(`users/${username}`,
-  //     {
-  //       firstName,
-  //       lastName,
-  //       email,
-  //       password
-  //     }, 'patch'
-  //   );
-  //   return res.user;
-  // }
 
+
+  /** update a user's information */
+  static async updateUser({id, username, firstname, lastname, zipcode, radius, hobbies, interests, image_url }) {
+    const res = await this.request(`users/${id}`,
+      {
+        username,
+        firstname,
+        lastname,
+        zipcode,
+        radius,
+        hobbies,
+        interests,
+        image_url
+      }, 'patch'
+    );
+    return res.user;
+  }
+
+
+    /** send image to aws */
+
+  static async sendImageToAWS(file){
+    const res = await axios.post (`${BASE_URL}/aws`,
+      {
+        type: 'image',
+        file: file
+    })
+    return res.data
+  }
 }
 
 export default frienderApi

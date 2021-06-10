@@ -8,7 +8,7 @@ import Likes from './Likes';
 import { Route, Switch, Redirect } from 'react-router-dom';
 
 
-function Routes({ handleSignup, handleLogin, handleLogout }) {
+function Routes({ handleSignup, handleLogin, handleUpdate, handleLogout }) {
   console.log('Route')
   return (
     <Switch>
@@ -18,7 +18,7 @@ function Routes({ handleSignup, handleLogin, handleLogout }) {
       {/* {currentUser ? */}
       <Switch>
         <Route exact path="/profileForm">
-          <ProfileForm />
+          <ProfileForm handleUpdate={handleUpdate} />
         </Route>
         <Route exact path="/Signup">
           <SignupForm handleSignup={handleSignup} />

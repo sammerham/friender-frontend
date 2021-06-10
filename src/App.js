@@ -47,6 +47,21 @@ function App() {
     }
   }
 
+
+  async function handleUpdate(file, formData){
+    const data = new FormData();
+    data.append("image", file);
+    try{
+      const resp = await frienderApi.sendImageToAWS(data);  //url
+      let updatedFormData = {...formData, image_url:resp}
+      const user = await frienderApi.updateUser(updatedFormData);
+      setCurrentUser(user);
+      return { success: true, errors: null }
+    } catch (errors) {
+      return { success: false, errors: errors }
+    }
+  }
+
   return (
     <div className="App">
       <BrowserRouter>
@@ -55,6 +70,7 @@ function App() {
           handleSignup={handleSignup}
           handleLogin={handleLogin}
           handleLogout={handleLogout}
+          handleUpdate={handleUpdate}
           errorMessages={errorMessages} />
       </BrowserRouter>
     </div>
