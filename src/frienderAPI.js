@@ -102,7 +102,7 @@ class frienderApi {
         "Content-Type": "multipart/form-data",
         "Access-Control-Allow-Origin": "*"
       },
-      file,
+      data: file,
     });
     return res.data;
   }

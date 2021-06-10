@@ -50,12 +50,12 @@ function App() {
 
   async function handleUpdate(file, formData){
     const data = new FormData();
-    data.append("image", file);
+    data.append("file", file, "photo.jpeg");
     try{
       const resp = await frienderApi.sendImageToAWS(data);  //url
-      let updatedFormData = {...formData, image_url:resp}
-      const user = await frienderApi.updateUser(updatedFormData);
-      setCurrentUser(user);
+      // let updatedFormData = {...formData, image_url:resp}
+      // const user = await frienderApi.updateUser(updatedFormData);
+      // setCurrentUser(user);
       return { success: true, errors: null }
     } catch (errors) {
       return { success: false, errors: errors }
