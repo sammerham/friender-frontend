@@ -87,10 +87,10 @@ class frienderApi {
     /** send image to aws */
 
   static async sendImageToAWS(file){
-    const res = await axios.post (`${BASE_URL}/aws`,
+    const res = await axios.post(`${BASE_URL}/aws`,
       {
         type: 'image',
-        file: file
+        file,
     })
     return res.data
   }

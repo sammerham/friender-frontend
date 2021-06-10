@@ -17,7 +17,7 @@ function Routes({ handleSignup, handleLogin, handleUpdate, handleLogout }) {
       </Route>
       {/* {currentUser ? */}
       <Switch>
-        <Route exact path="/profileForm">
+        <Route exact path="/profile">
           <ProfileForm handleUpdate={handleUpdate} />
         </Route>
         <Route exact path="/Signup">

@@ -27,7 +27,7 @@ function ProfileForm({handleUpdate}){
     }
 
     return(
-        <form>
+        <form onSubmit={handleSubmit} encType="multipart/form-data">
         <input
           id="file"
           name="file"
@@ -37,6 +37,7 @@ function ProfileForm({handleUpdate}){
             setSelectedFile(e.target.files[0]);
           }}
         />
+        <button> Submit! </button>
         </form>
     )
 }
