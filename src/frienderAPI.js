@@ -67,7 +67,7 @@ class frienderApi {
 
 
   /** update a user's information */
-  static async updateUser({id, username, firstname, lastname, zipcode, radius, hobbies, interests, image_url }) {
+  static async updateUser({ id, username, firstname, lastname, zipcode, radius, hobbies, interests, image_url }) {
     const res = await this.request(`users/${id}`,
       {
         username,
@@ -84,15 +84,27 @@ class frienderApi {
   }
 
 
-    /** send image to aws */
+  /** send image to aws */
 
-  static async sendImageToAWS(file){
-    const res = await axios.post(`${BASE_URL}/aws`,
-      {
-        type: 'image',
-        file,
-    })
-    return res.data
+  // static async sendImageToAWS(file){
+  //   const res = await axios.post(`${BASE_URL}/aws`,
+  //     {
+  //       type: 'image',
+  //       file,
+  //   })
+  //   return res.data
+  // }
+  static async sendImageToAWS(file) {
+    const res = await axios({
+      url: `${BASE_URL}/aws`,
+      method: "post",
+      headers: {
+        "Content-Type": "multipart/form-data",
+        "Access-Control-Allow-Origin": "*"
+      },
+      file,
+    });
+    return res.data;
   }
 }
 
