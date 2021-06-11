@@ -6,6 +6,8 @@ import './frienderAPI'
 import frienderApi from './frienderAPI';
 import { React, useState } from 'react'
 
+import userContext from './userContext'
+
 
 
 
@@ -48,14 +50,14 @@ function App() {
   }
 
 
-  async function handleUpdate(file, formData){
+  async function handleUpdate(file, formData) {
     const data = new FormData();
     data.append("file", file, "photo.jpeg");
-    try{
+    try {
       const resp = await frienderApi.sendImageToAWS(data);  //url
-      // let updatedFormData = {...formData, image_url:resp}
-      // const user = await frienderApi.updateUser(updatedFormData);
-      // setCurrentUser(user);
+      let updatedFormData = {...formData, image_url:resp}
+      const user = await frienderApi.updateUser(updatedFormData);
+      setCurrentUser(user);
       return { success: true, errors: null }
     } catch (errors) {
       return { success: false, errors: errors }
@@ -65,13 +67,15 @@ function App() {
   return (
     <div className="App">
       <BrowserRouter>
-        <Navbar />
-        <Routes
-          handleSignup={handleSignup}
-          handleLogin={handleLogin}
-          handleLogout={handleLogout}
-          handleUpdate={handleUpdate}
-          errorMessages={errorMessages} />
+        <userContext.Provider value={currentUser}>
+          <Navbar />
+          <Routes
+            handleSignup={handleSignup}
+            handleLogin={handleLogin}
+            handleLogout={handleLogout}
+            handleUpdate={handleUpdate}
+            errorMessages={errorMessages} />
+        </userContext.Provider>
       </BrowserRouter>
     </div>
   );
