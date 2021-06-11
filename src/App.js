@@ -4,11 +4,9 @@ import Routes from './Routes'
 import { BrowserRouter } from 'react-router-dom';
 import './frienderAPI'
 import frienderApi from './frienderAPI';
-import { React, useState } from 'react'
-
+import { React, useState, useEffect } from 'react'
+import { decodeToken } from "react-jwt";
 import userContext from './userContext'
-
-
 
 
 
@@ -16,14 +14,46 @@ import userContext from './userContext'
 function App() {
 
   const [currentUser, setCurrentUser] = useState(null);
-
-  const [isUserLoading, setIsUserLoading] = useState(true);
+  const [token, setToken] = useState(localStorage.getItem("token"));
   const [errorMessages, setErrorMessages] = useState([]);
+  const [loading, setLoading] = useState(true)
+
+  console.log('user--->>', currentUser)
+
+  function setLocalStorage(token) {
+    localStorage.setItem("token", token);
+    return localStorage.getItem("token");
+  }
+
+
+  useEffect(() => {
+    if (token) {
+      async function settingCurrUser() {
+        try {
+          const decodedToken = decodeToken(token);
+          frienderApi.token = token;
+          let userData = await frienderApi.getUser(decodedToken.id);
+          setCurrentUser(userData);
+          setLoading(false)
+        } catch (err) {
+            console.log('err in lon in', err)
+            setLoading(false)
+        }
+      }
+      settingCurrUser();
+      setLocalStorage(token);
+    } else {
+      setCurrentUser(null);
+      localStorage.removeItem("token");
+      setLoading(false)
+    }
+  }, [token]);
+
 
   async function handleLogin(loginData) {
     try {
-      const user = await frienderApi.login(loginData);
-      setCurrentUser(user);
+      const token = await frienderApi.login(loginData);
+      setToken(token);
       return { success: true, errors: null }
     } catch (errors) {
       return { success: false, errors: errors }
@@ -33,16 +63,16 @@ function App() {
   /** Removes token and currentUser from state 
    * and removes token from local storage */
   function handleLogout() {
-    setCurrentUser(null);
-    // localStorage.removeItem('user');
+    setToken(null);
+    localStorage.removeItem('token');
   }
 
   /** Accepts loginData {username, password}
    * Returns token if authenticated */
   async function handleSignup(signupData) {
     try {
-      const user = await frienderApi.signupUser(signupData);
-      setCurrentUser(user);
+      const token = await frienderApi.signupUser(signupData);
+      setToken(token);
       return { success: true, errors: null }
     } catch (errors) {
       return { success: false, errors: errors }
@@ -68,11 +98,10 @@ function App() {
     <div className="App">
       <BrowserRouter>
         <userContext.Provider value={currentUser}>
-          <Navbar />
+          <Navbar handleLogout={handleLogout}/>
           <Routes
             handleSignup={handleSignup}
             handleLogin={handleLogin}
-            handleLogout={handleLogout}
             handleUpdate={handleUpdate}
             errorMessages={errorMessages} />
         </userContext.Provider>

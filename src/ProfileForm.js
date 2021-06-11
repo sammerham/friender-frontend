@@ -5,7 +5,7 @@ import userContext from "./userContext.js";
 
 
 function ProfileForm({ handleUpdate }) {
-  const { currentUser } = useContext(userContext);
+  const currentUser  = useContext(userContext);
   const { username, firstName, lastName, zipcode, radius, interests, hobbies } = currentUser;
   
   const initialFormData = {

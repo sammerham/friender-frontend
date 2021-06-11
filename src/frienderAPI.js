@@ -11,7 +11,7 @@ const BASE_URL = process.env.REACT_APP_BASE_URL || "http://localhost:5000";
  */
 
 class frienderApi {
-
+  static token;
   static async request(endpoint, data = {}, method = "get") {
     console.debug("API Call:", endpoint, data, method);
 
@@ -55,13 +55,13 @@ class frienderApi {
   /** Authenticate with username and password and return user */
   static async login(loginData) {
     const res = await this.request('login', loginData, 'post');
-    return res.user;
+    return res.token;
   }
 
   /** Register user and return user */
   static async signupUser(signupData) {
     const res = await this.request('signup', signupData, 'post');
-    return res.user;
+    return res.token;
   }
 
 
